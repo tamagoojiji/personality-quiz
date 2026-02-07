@@ -57,6 +57,56 @@ body {
   margin-top: 4px;
 }
 
+/* ログイン画面 */
+.login-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-top: 40px;
+}
+
+.login-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.login-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 2px solid var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.login-error {
+  color: var(--wrong);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
 /* トップ画面 */
 .category-list {
   display: flex;

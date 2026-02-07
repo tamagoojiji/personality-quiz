@@ -14,8 +14,19 @@
       <p class="app-subtitle">12動物の特性を楽しく学ぼう</p>
     </header>
 
+    <!-- ログイン画面 -->
+    <main id="login-screen">
+      <div class="login-card">
+        <div class="login-icon">🔒</div>
+        <p class="login-message">パスワードを入力してください</p>
+        <input type="password" id="password-input" class="login-input" placeholder="パスワード">
+        <p id="login-error" class="login-error hidden">パスワードが正しくありません</p>
+        <button id="login-btn" class="btn-primary login-btn">ログイン</button>
+      </div>
+    </main>
+
     <!-- トップ画面 -->
-    <main id="top-screen">
+    <main id="top-screen" class="hidden">
       <div class="category-list">
         <button class="category-btn" data-category="groups">
           <span class="category-icon">🌍</span>

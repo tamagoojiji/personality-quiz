@@ -13,8 +13,11 @@
 
   const QUESTIONS_PER_QUIZ = 10;
 
-  // GAS Web App エンドポイントURL（デプロイ後に設定）
+  // GAS Web App エンドポイントURL
   const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxf9r656FvQrp08lGfcQ9hDea37AXf-KUlMm0tEV7FPxz43UsazpZs_Db_yQw_I4_wd/exec";
+
+  // パスワードのSHA-256ハッシュ値
+  const PASSWORD_HASH = "e769c3f0cf6b9317528048c2b3b43104fe9e84144f0dddb59fd34efe05c8d24b";
 
   // アプリ状態
   let state = {
@@ -39,6 +42,31 @@
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+
+  // SHA-256ハッシュ生成
+  async function sha256(message) {
+    var msgBuffer = new TextEncoder().encode(message);
+    var hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    var hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+  }
+
+  // ログイン処理
+  async function handleLogin() {
+    var password = $("password-input").value;
+    var hash = await sha256(password);
+
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem("quiz_auth", "1");
+      $("login-screen").classList.add("hidden");
+      $("login-error").classList.add("hidden");
+      renderTop();
+    } else {
+      $("login-error").classList.remove("hidden");
+      $("password-input").value = "";
+      $("password-input").focus();
+    }
   }
 
   // セッションID生成（ランダム8桁）
@@ -93,6 +121,7 @@
 
   // トップ画面の描画
   function renderTop() {
+    $("login-screen").classList.add("hidden");
     $("top-screen").classList.remove("hidden");
     $("quiz-screen").classList.add("hidden");
     $("result-screen").classList.add("hidden");
@@ -341,6 +370,12 @@
 
   // イベントリスナー登録
   function init() {
+    // ログインボタン
+    $("login-btn").addEventListener("click", handleLogin);
+    $("password-input").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") handleLogin();
+    });
+
     // カテゴリボタン
     var categoryBtns = document.querySelectorAll("[data-category]");
     categoryBtns.forEach(function (btn) {
@@ -360,8 +395,13 @@
     // カテゴリ選択に戻るボタン
     $("back-btn").addEventListener("click", renderTop);
 
-    // 初期表示
-    renderTop();
+    // 認証済みならトップ画面、未認証ならログイン画面
+    if (sessionStorage.getItem("quiz_auth") === "1") {
+      $("login-screen").classList.add("hidden");
+      renderTop();
+    } else {
+      $("password-input").focus();
+    }
   }
 
   // DOM読み込み後に初期化
