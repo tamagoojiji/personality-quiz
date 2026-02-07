@@ -100,7 +100,16 @@
     $("next-btn").classList.add("hidden");
 
     if (q.type === "choice") {
-      q.choices.forEach(function (choice, i) {
+      // 選択肢をシャッフルして正解位置をランダム化
+      var indices = q.choices.map(function (_, i) { return i; });
+      var shuffledIndices = shuffle(indices);
+      var shuffledChoices = shuffledIndices.map(function (i) { return q.choices[i]; });
+      // シャッフル後の正解位置を記録
+      var correctPos = shuffledIndices.indexOf(q.answer);
+      state.currentShuffledAnswer = correctPos;
+      state.currentShuffledChoices = shuffledChoices;
+
+      shuffledChoices.forEach(function (choice, i) {
         const btn = document.createElement("button");
         btn.className = "choice-btn";
         btn.textContent = choice;
@@ -140,8 +149,11 @@
     state.answered = true;
 
     const q = state.questions[state.currentIndex];
-    const isCorrect = selected === q.answer;
     const choicesEl = $("choices");
+
+    // 4択はシャッフル後の正解位置で判定
+    var correctAnswer = q.type === "choice" ? state.currentShuffledAnswer : q.answer;
+    var isCorrect = selected === correctAnswer;
 
     if (isCorrect) {
       state.score++;
@@ -149,9 +161,9 @@
       state.wrongAnswers.push({
         question: q.question,
         type: q.type,
-        userAnswer: selected,
-        correctAnswer: q.answer,
-        choices: q.choices || null,
+        userAnswer: q.type === "choice" ? state.currentShuffledChoices[selected] : selected,
+        correctAnswer: q.type === "choice" ? q.choices[q.answer] : q.answer,
+        choices: q.type === "choice" ? state.currentShuffledChoices : null,
         explanation: q.explanation
       });
     }
@@ -163,7 +175,7 @@
       var buttons = choicesEl.querySelectorAll(".choice-btn");
       buttons.forEach(function (btn, i) {
         btn.disabled = true;
-        if (i === q.answer) {
+        if (i === correctAnswer) {
           btn.classList.add("correct");
         } else if (i === selected && !isCorrect) {
           btn.classList.add("wrong");
@@ -257,8 +269,8 @@
         var correctAnswer;
 
         if (w.type === "choice") {
-          yourAnswer = w.choices[w.userAnswer];
-          correctAnswer = w.choices[w.correctAnswer];
+          yourAnswer = w.userAnswer;
+          correctAnswer = w.correctAnswer;
         } else {
           yourAnswer = w.userAnswer ? "○" : "×";
           correctAnswer = w.correctAnswer ? "○" : "×";
