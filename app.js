@@ -65,7 +65,7 @@
 
       fetch(GAS_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "text/plain" },
+        mode: "no-cors",
         body: JSON.stringify(payload)
       }).catch(function () {
         // 送信失敗してもUIに影響なし
