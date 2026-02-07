@@ -13,6 +13,9 @@
 
   const QUESTIONS_PER_QUIZ = 10;
 
+  // GAS Web App エンドポイントURL（デプロイ後に設定）
+  const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxf9r656FvQrp08lGfcQ9hDea37AXf-KUlMm0tEV7FPxz43UsazpZs_Db_yQw_I4_wd/exec";
+
   // アプリ状態
   let state = {
     currentScreen: "top",
@@ -36,6 +39,40 @@
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+
+  // セッションID生成（ランダム8桁）
+  function generateSessionId() {
+    var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    var id = "";
+    for (var i = 0; i < 8; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+  }
+
+  // 回答データをGAS Web Appに送信
+  function sendAnswerData() {
+    if (GAS_ENDPOINT === "YOUR_GAS_WEB_APP_URL_HERE") return;
+
+    try {
+      var payload = {
+        sessionId: generateSessionId(),
+        category: state.currentCategory,
+        timestamp: new Date().toISOString(),
+        answers: state.userAnswers
+      };
+
+      fetch(GAS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload)
+      }).catch(function () {
+        // 送信失敗してもUIに影響なし
+      });
+    } catch (e) {
+      // エラー時もサイレントに無視
+    }
   }
 
   // クイズ問題を抽出
@@ -168,7 +205,14 @@
       });
     }
 
-    state.userAnswers.push(selected);
+    // 送信用の回答データを記録
+    state.userAnswers.push({
+      question: q.question,
+      type: q.type,
+      userAnswer: q.type === "choice" ? state.currentShuffledChoices[selected] : (selected ? "○" : "×"),
+      correctAnswer: q.type === "choice" ? q.choices[q.answer] : (q.answer ? "○" : "×"),
+      isCorrect: isCorrect
+    });
 
     // ボタン状態の更新
     if (q.type === "choice") {
@@ -239,6 +283,9 @@
       msg = "基礎からしっかり復習しましょう！";
     }
     $("result-message").textContent = msg;
+
+    // 回答データをGASに送信（バックグラウンド）
+    sendAnswerData();
 
     // 結果の円グラフ風表示
     var circle = $("result-circle");
