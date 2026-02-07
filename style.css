@@ -1,0 +1,468 @@
+/* 個性心理学クイズ スタイル */
+
+:root {
+  --primary: #6C5CE7;
+  --primary-light: #A29BFE;
+  --primary-dark: #5A4BD1;
+  --correct: #00B894;
+  --correct-bg: #E8F8F5;
+  --wrong: #E17055;
+  --wrong-bg: #FDEDEC;
+  --text: #2D3436;
+  --text-light: #636E72;
+  --bg: #F8F9FA;
+  --bg-secondary: #E9ECEF;
+  --white: #FFFFFF;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ヘッダー */
+.app-header {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.app-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* トップ画面 */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.category-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.category-btn:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.category-btn:active {
+  transform: translateY(0);
+}
+
+.category-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.category-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+/* クイズ画面 */
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.quiz-category {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.quiz-progress {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.progress-bar {
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  height: 6px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: var(--primary);
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.question-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+
+.question-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-btn {
+  background: var(--white);
+  border: 2px solid var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  color: var(--text);
+  font-family: inherit;
+  width: 100%;
+}
+
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--primary-light);
+  background: #F5F3FF;
+}
+
+.choice-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.choice-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.choice-btn.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  opacity: 1;
+  font-weight: 700;
+}
+
+.choice-btn.wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+  opacity: 1;
+}
+
+/* ○×ボタン */
+.tf-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tf-btn {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 20px 18px;
+}
+
+/* フィードバック */
+.feedback {
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+
+.feedback-correct {
+  background: var(--correct-bg);
+  border-left: 4px solid var(--correct);
+}
+
+.feedback-wrong {
+  background: var(--wrong-bg);
+  border-left: 4px solid var(--wrong);
+}
+
+.feedback-label {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.feedback-correct .feedback-label {
+  color: var(--correct);
+}
+
+.feedback-wrong .feedback-label {
+  color: var(--wrong);
+}
+
+.feedback-explanation {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* 次の問題ボタン */
+.next-btn {
+  display: block;
+  width: 100%;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.next-btn:hover {
+  background: var(--primary-dark);
+}
+
+.next-btn:active {
+  transform: scale(0.98);
+}
+
+/* 結果画面 */
+.result-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.result-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.result-circle-inner {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-rate {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.result-score {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+.result-message {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 8px;
+}
+
+/* 復習セクション */
+.review-section {
+  margin-top: 20px;
+}
+
+.review-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.review-item {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+}
+
+.review-question {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.review-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.your-answer {
+  color: var(--wrong);
+  font-weight: 600;
+}
+
+.correct-answer {
+  color: var(--correct);
+  font-weight: 600;
+}
+
+.review-explanation {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  padding-top: 8px;
+  border-top: 1px solid var(--bg-secondary);
+}
+
+.review-perfect {
+  text-align: center;
+  color: var(--correct);
+  font-weight: 600;
+  padding: 20px;
+}
+
+/* アクションボタン群 */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--text);
+  border: 2px solid var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary-light);
+}
+
+/* ユーティリティ */
+.hidden {
+  display: none !important;
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .app-title {
+    font-size: 1.3rem;
+  }
+
+  .question-text {
+    font-size: 1rem;
+  }
+
+  .choice-btn {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .tf-btn {
+    padding: 16px 14px;
+  }
+}

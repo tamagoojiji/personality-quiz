@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>個性心理学クイズ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <header class="app-header">
+      <h1 class="app-title">個性心理学クイズ</h1>
+      <p class="app-subtitle">12動物の特性を楽しく学ぼう</p>
+    </header>
+
+    <!-- トップ画面 -->
+    <main id="top-screen">
+      <div class="category-list">
+        <button class="category-btn" data-category="groups">
+          <span class="category-icon">🌍</span>
+          <div class="category-info">
+            <div class="category-name">3グループ編</div>
+            <div class="category-desc">SUN・EARTH・MOONの特徴と力関係</div>
+          </div>
+        </button>
+
+        <button class="category-btn" data-category="animals">
+          <span class="category-icon">🦁</span>
+          <div class="category-info">
+            <div class="category-name">12動物 特性編</div>
+            <div class="category-desc">各動物の性格・行動パターン・ステージ</div>
+          </div>
+        </button>
+
+        <button class="category-btn" data-category="classification">
+          <span class="category-icon">📊</span>
+          <div class="category-info">
+            <div class="category-name">分類軸編</div>
+            <div class="category-desc">未来/過去・右脳/左脳・目標/状況の分類</div>
+          </div>
+        </button>
+
+        <button class="category-btn" data-category="mistakes">
+          <span class="category-icon">⚡</span>
+          <div class="category-info">
+            <div class="category-name">ミスの傾向編</div>
+            <div class="category-desc">各動物のミスパターンと特徴</div>
+          </div>
+        </button>
+
+        <button class="category-btn" data-category="total">
+          <span class="category-icon">🏆</span>
+          <div class="category-info">
+            <div class="category-name">総合編</div>
+            <div class="category-desc">全カテゴリからランダム出題</div>
+          </div>
+        </button>
+      </div>
+    </main>
+
+    <!-- クイズ画面 -->
+    <main id="quiz-screen" class="hidden">
+      <div class="quiz-header">
+        <span id="quiz-category" class="quiz-category"></span>
+        <span id="quiz-progress" class="quiz-progress"></span>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <div class="question-card">
+        <p id="question-text" class="question-text"></p>
+      </div>
+
+      <div id="choices" class="choices"></div>
+
+      <div id="feedback" class="feedback hidden">
+        <div id="feedback-label" class="feedback-label"></div>
+        <div id="feedback-explanation" class="feedback-explanation"></div>
+      </div>
+
+      <button id="next-btn" class="next-btn hidden">次の問題へ</button>
+    </main>
+
+    <!-- 結果画面 -->
+    <main id="result-screen" class="hidden">
+      <div class="result-card">
+        <div id="result-circle" class="result-circle">
+          <div class="result-circle-inner">
+            <div id="result-rate" class="result-rate"></div>
+            <div id="result-score" class="result-score"></div>
+          </div>
+        </div>
+        <div id="result-message" class="result-message"></div>
+      </div>
+
+      <div class="review-section">
+        <h2 class="review-title">間違えた問題</h2>
+        <div id="review-list"></div>
+      </div>
+
+      <div class="result-actions">
+        <button id="retry-btn" class="btn-primary">もう一度チャレンジ</button>
+        <button id="back-btn" class="btn-secondary">カテゴリ選択に戻る</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
